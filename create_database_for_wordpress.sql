@@ -1,3 +1,3 @@
-CREATE DATABASE ido_prod;
-GRANT ALL PRIVILEGES ON ido_prod.* TO "df5y6eqst_"@"%" IDENTIFIED BY "ghjhe8r6t4";
+CREATE DATABASE dbname;
+GRANT ALL PRIVILEGES ON dbname.* TO "user"@"%" IDENTIFIED BY "password";
 FLUSH PRIVILEGES;
