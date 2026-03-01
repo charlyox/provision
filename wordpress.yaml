@@ -5,6 +5,7 @@ package_update: true
 packages:
   - apache2
   - php8.4-fpm
+  - php7.4-dev
   - libapache2-mod-php
   - php8.4-mysql
   - php8.4-curl
@@ -21,7 +22,8 @@ packages:
   - python3-certbot-apache
   - nano
   - unzip
-
+  - imagemagick
+  - php8.4-imagick
 
 runcmd:
   - wget -O /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz
@@ -52,7 +54,7 @@ runcmd:
     DirectoryIndex index.php
     Require all granted
     #          <FilesMatch ".php$">
-    #           SetHandler "proxy:unix:/var/run/php/php8.2-fpm.${phpPoolUser}.sock|fcgi://localhost/"
+    #           SetHandler "proxy:unix:/var/run/php/php8.4-fpm.${phpPoolUser}.sock|fcgi://localhost/"
     #        </FilesMatch>
     </Directory>
     <Directory /var/cuisine/recette.monsiegedebureau.fr/public/wp-content>
@@ -68,4 +70,4 @@ runcmd:
   # CERTBOT Ã  faire une fois que le DNS est basculÃ©
   # - certbot -n --apache --agree-tos --redirect --hsts --uir --staple-ocsp --email admin+web62@latelier62.fr -d demo.domain.tld -v
 
-final_message: "The system is finally up Charlie. After $UPTIME seconds. Don't forget CERTBOT and PHP."
+final_message: "The system is finally up Charlie. After $UPTIME seconds. Don't forget CERTBOT and PHP Pool."
