@@ -1,0 +1,20 @@
+#cloud-config
+
+package_update: true
+
+packages:
+  - mariadb-server
+  - nano
+
+runcmd:
+  - sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
+  - cat >> /tmp/db.sql << EOF
+    CREATE DATABASE ido_prod;
+    GRANT ALL PRIVILEGES ON ido_prod.* TO "sth54"@"%" IDENTIFIED BY "fjh4sg_qtey";
+    FLUSH PRIVILEGES;
+    EOF
+  - mysql < /tmp/db.sql
+  - systemctl restart mariadb
+  - systemctl enable mariadb
+
+final_message: "The system is finally up Charlie ! After $UPTIME seconds"

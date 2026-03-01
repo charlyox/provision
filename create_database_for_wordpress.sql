@@ -1,3 +1,0 @@
-CREATE DATABASE dbname;
-GRANT ALL PRIVILEGES ON dbname.* TO "user"@"%" IDENTIFIED BY "password";
-FLUSH PRIVILEGES;

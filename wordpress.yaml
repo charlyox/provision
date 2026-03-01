@@ -1,0 +1,72 @@
+#cloud-config
+
+package_update: true
+
+packages:
+  - apache2
+  - php8.3-fpm
+  - libapache2-mod-php
+  - php8.3-mysql
+  - php8.3-curl
+  - php8.3-gd
+  - php8.3-mbstring
+  - php8.3-xml
+  - php8.3-xmlrpc
+  - php8.3-soap
+  - php8.3-intl
+  - php8.3-zip
+  - php8.3-xdebug
+  - php8.3-ssh2
+  - certbot
+  - python3-certbot-apache
+  - nano
+  - unzip
+
+
+runcmd:
+  - wget -O /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz
+  - mkdir /var/www/latelier62.fr/public
+  - tar -xzvf /tmp/wordpress.tar.gz -C /var/www/latelier62.fr/public
+  - chown -R www-data:www-data /var/www/latelier62.fr
+  - cat >> /etc/apache2/sites-available/latelier62.fr.conf << EOF
+    <VirtualHost *:80>
+    ServerAdmin admin+la62web@latelier62.fr
+    ServerName www.latelier62.fr
+    ServerAlias latelier62.fr
+    
+    # Redirect www to ${siteName} # OU l'inverse - modifier suivant le besoin.
+    RewriteCond %{SERVER_NAME} =latelier62.fr
+    RewriteRule ^ https://www.%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+    
+    DocumentRoot /var/www/latelier62.fr/public
+    
+    # Custom log files, to differentiate from root server
+    ErrorLog ${APACHE_LOG_DIR}/error-latelier62.fr.log
+    CustomLog ${APACHE_LOG_DIR}/access-latelier62.fr.log combined
+    LogLevel crit
+    
+    Alias /wp-content /var/www/latelier62.fr/public/wp-content
+    
+    <Directory /var/www/latelier62.fr/public>
+    Options FollowSymLinks
+    AllowOverride Limit Options FileInfo
+    DirectoryIndex index.php
+    Require all granted
+    #          <FilesMatch ".php$">
+    #           SetHandler "proxy:unix:/var/run/php/php8.2-fpm.${phpPoolUser}.sock|fcgi://localhost/"
+    #        </FilesMatch>
+    </Directory>
+    <Directory /var/www/latelier62.fr/public/wp-content>
+    Options FollowSymLinks
+    Require all granted
+    </Directory>
+    </VirtualHost>
+    EOF
+  - a2dissite 000-default
+  - a2ensite latelier62.fr.conf
+  - systemctl enable apache2
+  - systemctl restart apache2
+  # CERTBOT Ã  faire une fois que le DNS est basculÃ©
+  # - certbot -n --apache --agree-tos --redirect --hsts --uir --staple-ocsp --email admin+web62@latelier62.fr -d demo.domain.tld -v
+
+final_message: "The system is finally up Charlie. After $UPTIME seconds. Don't forget CERTBOT and PHP."
