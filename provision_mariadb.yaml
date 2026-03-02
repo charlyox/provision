@@ -9,8 +9,8 @@ packages:
 runcmd:
   - sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
   - cat >> /tmp/db.sql << EOF
-    CREATE DATABASE ido_prod;
-    GRANT ALL PRIVILEGES ON ido_prod.* TO "sth54"@"%" IDENTIFIED BY "fjh4sg_qtey";
+    CREATE DATABASE msb_rec;
+    GRANT ALL PRIVILEGES ON msb_rec.* TO "udber168"@"%" IDENTIFIED BY "eqrv4azeq86f_tf";
     FLUSH PRIVILEGES;
     EOF
   - mysql < /tmp/db.sql

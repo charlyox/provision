@@ -20,8 +20,8 @@ sudo apt update -y
 sudo apt policy php
 
 #? sudo apt-get install software-properties-common
-sudo apt install -y php8.3
-sudo apt install php8.3-fpm php8.3-dev php8.3-xml php8.3-zip unzip php8.3-curl php8.3-gd php8.3-mbstring php8.3-xdebug php8.3-ssh2 php8.3-mysql -y
+sudo apt install -y php8.4
+sudo apt install php8.4-fpm php8.4-dev php8.4-xml php8.4-zip unzip php8.4-curl php8.4-gd php8.4-mbstring php8.4-xdebug php8.4-ssh2 php8.4-mysql -y
 
 # php version
 php -v
@@ -30,10 +30,10 @@ php -v
 php -m
 
 # Enable PHP-FPM to automatically start at boot.
-sudo systemctl enable php8.3-fpm
+sudo systemctl enable php8.4-fpm
 
 # start service
-sudo systemctl start php8.3-fpm
+sudo systemctl start php8.4-fpm
 
 # Installation de apache
 sudo apt install apache2 -y
@@ -46,8 +46,8 @@ sudo apt install imagemagick
 
 # Création du dossier /var/cuisine/recette.domain.fr/public et /var/www/domain.fr/public.
 
-sudo mkdir /var/cuisine/dyslexiefrance/public
-sudo mkdir /var/www/public
+sudo mkdir /var/cuisine/recette.monsiegedebureau.fr/public
+sudo mkdir /var/www/monsiegedebureau.fr/public
 
 # sudo nano /etc/apache2/apache2.conf
 
@@ -66,7 +66,7 @@ sudo mkdir /var/www/public
 	ServerSignature Off
 
 # Pas de modification des php.ini - on garde ceux par défaut pour l'instant
-# Pas de modification non plus de /etc/php/7.4/fpm/pool.d/www.conf et 8.0 même s'il existe des différences.
+# Pas de modification non plus de /etc/php/8.4/fpm/pool.d/www.conf et 8.0 même s'il existe des différences.
 
 
 
@@ -84,29 +84,29 @@ sudo mkdir /var/www/public
 			Require all granted
 		</Directory>
 		<FilesMatch ".php$">
-			SetHandler "proxy:unix:/var/run/php/php8.0-fpm.sock|fcgi://localhost/"
+			SetHandler "proxy:unix:/var/run/php/php8.4-fpm.sock|fcgi://localhost/"
 	    	</FilesMatch>
 	</VirtualHost>
 
 # ajout utilsateur
 sudo adduser gerg
-tgi86er46
+tgi8
 
 usermod -a -G $phpPoolUser www-data
 
 # Copier le fichier /etc/php/8.3/fpm/pool.d/www.conf en user.conf
 Modifier les occurences de www-data et changer par user
 
-a2enmod rewrite
+sudo a2enmod rewrite
 
 #sudo nano /etc/hosts ! TODO  Ajouter la correcte syntaxe cf le vrai fichier incluant le nom du serveur
 	=> Ajouter la ligne :
-	127.0.0.1 dyslexiefrance.latelier62.fr sainteloi
-	127.0.0.1 latelier62.fr sainteloi
+	127.0.0.1 recette.monsiegedebureau.fr 
+	127.0.0.1 monsiegedebureau.fr 
 
 # Activer le module proxy_fcgi qui fait le lien entre php-fpm et apache
 	sudo a2enmod proxy_fcgi
-	sudo service php7.4-fpm restart
+	sudo service php8.4-fpm restart
 	sudo service apache2 restart
 
 #Suppression du site par défaut puisqu'on va se mettre au même endroit (sinon il prend notre place et passe devant nous)
@@ -117,7 +117,7 @@ a2enmod rewrite
 
 # MariaDB
 	sudo apt install mariadb-server
-	sudo apt-get install php8.0-mysql
+	sudo apt-get install php8.4-mysql
 
 
 # Activation du ssl
