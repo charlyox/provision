@@ -18,6 +18,7 @@ packages:
   - php8.4-zip
   - php8.4-xdebug
   - php8.4-ssh2
+  - php8.4-intl
   - certbot
   - python3-certbot-apache
   - nano
